@@ -16,7 +16,7 @@ $sha256 = $null
 $timestamp = Get-Date -f yyyyMMddHHmmss
 
 $installerFileName = $appName + "." + $installerType
-$transcriptPath = "$env:TEMP/$timestamp-install-$appName.log"
+$transcriptPath = "$env:TEMP\$timestamp-install-$appName.log"
 
 Start-Transcript -Path $transcriptPath -Append
 
@@ -26,20 +26,20 @@ $uninstall_strings = Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\Curren
 if(!$uninstall_strings) {
 
     # Download the installer
-    Invoke-RestMethod -Method Get -Uri $appUrl -OutFile "$env:TEMP/$installerFileName"
+    Invoke-RestMethod -Method Get -Uri $appUrl -OutFile "$env:TEMP\$installerFileName"
 
     # Make sure the installer downloaded successfully
-    if(Test-Path $env:TEMP/$installerFileName) {
+    if(Test-Path $env:TEMP\$installerFileName) {
 
         # Validate the Sha256 if it is set
-        if(($sha256 -eq $(Get-FileHash -Path "$env:TEMP/$installerFileName").Hash) -or !$sha256) {
-            Write-Output "Installer for $appName was downloaded to $env:TEMP/$installerFileName."
+        if(($sha256 -eq $(Get-FileHash -Path "$env:TEMP\$installerFileName").Hash) -or !$sha256) {
+            Write-Output "Installer for $appName was downloaded to $env:TEMP\$installerFileName."
 
             if($installerType = "msi") {
 
                 Write-Output "Install type specified was $installerType. Launching msiexec to run the installation."
                 Try{
-                    Start-Process msiexec -ArgumentList "/i $env:TEMP/$installerFileName /qn" -Wait
+                    Start-Process msiexec.exe -ArgumentList "/i `"$env:TEMP\$installerFileName`" /qn" -Wait
                     Write-Output "Installer completed."
                 } Catch {
                     Write-Output "Something went wrong. Error message below:"
@@ -50,7 +50,7 @@ if(!$uninstall_strings) {
             } elseif ($installerType = "exe") {
                 Write-Output "Install type specified was $installerType. Launching $installerFileName to run the installation."
                 Try {
-                    Start-Process "$env:TEMP/$installerFileName" -ArgumentList $installerArgs -Wait
+                    Start-Process "$env:TEMP\$installerFileName" -ArgumentList $installerArgs -Wait
                     Write-Output "Installer completed."
                 } Catch {
                     Write-Output "Something went wrong. Error message below:"
