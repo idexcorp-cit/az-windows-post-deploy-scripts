@@ -26,7 +26,7 @@ $uninstall_strings = Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\Curren
 if(!$uninstall_strings) {
 
     # Download the installer
-    Invoke-RestMethod -Method Get -Uri $appUrl -OutFile "$env:TEMP/$installerFileName" -Wait
+    Invoke-RestMethod -Method Get -Uri $appUrl -OutFile "$env:TEMP/$installerFileName"
 
     # Make sure the installer downloaded successfully
     if(Test-Path $env:TEMP/$installerFileName) {
