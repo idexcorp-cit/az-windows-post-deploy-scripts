@@ -7,7 +7,7 @@ Author: Zach Choate
 
 #>
 
-$scripts = Get-ChildItem -Filter "*.ps1" | Where-Object {$_.Name -ne "run-scripts.ps1"}
+$scripts = Get-ChildItem -Filter "*.ps1" | Where-Object {$_.Name -ne "run-scripts.ps1"} | Sort
 
 foreach($script in $scripts) {
     $scriptPath = ".\" + $script.Name
