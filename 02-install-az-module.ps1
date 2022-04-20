@@ -15,9 +15,17 @@ $transcriptPath = "$env:TEMP/$timestamp-az-module.log"
 
 Start-Transcript -Path $transcriptPath -Append
 
-# https://evotec.xyz/powershellgallery-you-are-installing-modules-from-an-untrusted-repository/
-Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+$moduleInstalled = Get-InstalledModule -Name Az -ErrorAction SilentlyContinue
 
-Install-Module Az -AllowClobber -AcceptLicense -Confirm:$false -Repository PSGallery
+if( -not $moduleInstalled) {
 
-Set-PSRepository -Name 'PSGallery' -InstallationPolicy Untrusted
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+
+    # https://evotec.xyz/powershellgallery-you-are-installing-modules-from-an-untrusted-repository/
+    Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+
+    Install-Module Az -AllowClobber -Confirm:$false -Repository PSGallery
+
+    Set-PSRepository -Name 'PSGallery' -InstallationPolicy Untrusted
+
+}

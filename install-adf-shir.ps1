@@ -23,13 +23,15 @@ $transcriptPath = "$env:TEMP\$timestamp-install-$appName.log"
 Start-Transcript -Path $transcriptPath -Append
 
 # Get the resource group of the VM, the key vault should be located in the same resource group
-$resourceGroup = (Invoke-RestMethod -Headers @{"Metadata"="true"} -Method GET -NoProxy -Uri "http://169.254.169.254/metadata/instance?api-version=2021-02-01").compute.resourceGroupName
+$metadata = (Invoke-RestMethod -Headers @{"Metadata"="true"} -Method GET -Uri "http://169.254.169.254/metadata/instance?api-version=2021-02-01").compute
+$resourceGroup = $metadata.resourceGroupName
+$subscriptionId = $metadata.subscriptionId
 
 # Connect to Az to get KV secret
 Connect-AzAccount -Identity
 
 # Get vault name
-$vaultName = (Get-AzKeyVault -ResourceGroupName $resourceGroup).vaultName
+$vaultName = (Get-AzKeyVault -ResourceGroupName $resourceGroup -SubscriptionId $subscriptionId).vaultName
 
 # Get Key Vault Secret
 $shirKey = Get-AzKeyVaultSecret -VaultName $vaultName -AsPlainText -Name "shir-auth-key"
