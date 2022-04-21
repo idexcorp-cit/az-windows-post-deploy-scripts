@@ -37,7 +37,10 @@ $vaultName = (Get-AzKeyVault -ResourceGroupName $resourceGroup -SubscriptionId $
 $shirKey = Get-AzKeyVaultSecret -VaultName $vaultName -AsPlainText -Name "shir-token"
 
 # Download the installer
-Invoke-RestMethod -Method GET -Uri $appUrl -OutFile "$installerPath"
+# -- Switching to net.webclient for download. It's way faster... --
+# Invoke-RestMethod -Method GET -Uri $appUrl -OutFile "$installerPath" -ContentType "application/octet-stream"
+$webclient = New-Object net.webclient
+$webclient.DownloadFile($appUrl, $installerPath)
 
 # Download SHIR installer script
 Invoke-RestMethod -Method GET -Uri $shirInstallScript -OutFile $shirScriptPath
