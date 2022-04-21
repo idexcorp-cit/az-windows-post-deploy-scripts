@@ -7,7 +7,7 @@ Author: Zach Choate
 
 #>
 
-$appName = "Integration Runtime"
+$appName = "IntegrationRuntime"
 $appUrl = 'http://go.microsoft.com/fwlink/?LinkID=839822'
 $installerType = "msi"
 $shirInstallScript = "https://raw.githubusercontent.com/Azure/Azure-DataFactory/main/SamplesV2/SelfHostedIntegrationRuntime/AutomationScripts/InstallGatewayOnLocalMachine.ps1"
