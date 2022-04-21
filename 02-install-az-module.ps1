@@ -29,3 +29,5 @@ if( -not $moduleInstalled) {
     Set-PSRepository -Name 'PSGallery' -InstallationPolicy Untrusted
 
 }
+
+Exit 0

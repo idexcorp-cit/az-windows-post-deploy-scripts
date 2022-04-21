@@ -48,6 +48,7 @@ Invoke-RestMethod -Method GET -Uri $shirInstallScript -OutFile $shirScriptPath
 # Make sure the installer downloaded successfully
 if((Test-Path $installerPath) -and (Test-Path $shirScriptPath)) {
     Try {
+        Write-Output "Running the installer..."
         Start-Process powershell.exe -ArgumentList "-ExecutionPolicy Bypass -File $shirScriptPath -path $installerPath -authKey $shirKey" -Wait
     } Catch {
         Write-Error $_
@@ -56,3 +57,7 @@ if((Test-Path $installerPath) -and (Test-Path $shirScriptPath)) {
     Write-Output "The installer doesn't look like it downloaded successfully."
     Exit 1
 }
+
+Write-Output "If we got here, that's good right?"
+
+Exit 0
