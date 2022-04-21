@@ -34,7 +34,7 @@ Connect-AzAccount -Identity
 $vaultName = (Get-AzKeyVault -ResourceGroupName $resourceGroup -SubscriptionId $subscriptionId).vaultName
 
 # Get Key Vault Secret
-$shirKey = Get-AzKeyVaultSecret -VaultName $vaultName -AsPlainText -Name "shir-auth-key"
+$shirKey = Get-AzKeyVaultSecret -VaultName $vaultName -AsPlainText -Name "shir-token"
 
 # Download the installer
 Invoke-RestMethod -Method GET -Uri $appUrl -OutFile "$installerPath"
