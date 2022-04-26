@@ -36,6 +36,9 @@ $vaultName = (Get-AzKeyVault -ResourceGroupName $resourceGroup -SubscriptionId $
 # Get Key Vault Secret
 $shirKey = Get-AzKeyVaultSecret -VaultName $vaultName -AsPlainText -Name "$resourceGroup-adf-token"
 
+# Get certificate thumbprint
+$shirCert = (Get-AzKeyVaultSecret -VaultName $vaultName -Name "$resourceGroup-adf-cert").thumbprint
+
 # Download the installer
 # -- Switching to net.webclient for download. It's way faster... --
 # Invoke-RestMethod -Method GET -Uri $appUrl -OutFile "$installerPath" -ContentType "application/octet-stream"
@@ -49,7 +52,7 @@ Invoke-RestMethod -Method GET -Uri $shirInstallScript -OutFile $shirScriptPath
 if((Test-Path $installerPath) -and (Test-Path $shirScriptPath)) {
     Try {
         Write-Output "Running the installer..."
-        Start-Process powershell.exe -ArgumentList "-ExecutionPolicy Bypass -File $shirScriptPath -path $installerPath -authKey $shirKey -port 8060" -Wait
+        Start-Process powershell.exe -ArgumentList "-ExecutionPolicy Bypass -File $shirScriptPath -path $installerPath -authKey $shirKey -port 8060 -cert $shirCert" -Wait
     } Catch {
         Write-Error $_
     }
