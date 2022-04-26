@@ -37,7 +37,7 @@ $vaultName = (Get-AzKeyVault -ResourceGroupName $resourceGroup -SubscriptionId $
 $shirKey = Get-AzKeyVaultSecret -VaultName $vaultName -AsPlainText -Name "$resourceGroup-adf-token"
 
 # Get certificate thumbprint
-$shirCert = (Get-AzKeyVaultSecret -VaultName $vaultName -Name "$resourceGroup-adf-cert").thumbprint
+$shirCert = (Get-AzKeyVaultCertificate -VaultName $vaultName -Name "$resourceGroup-adf-cert").thumbprint
 
 # Download the installer
 # -- Switching to net.webclient for download. It's way faster... --
